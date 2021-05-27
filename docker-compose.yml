@@ -2,7 +2,7 @@ version: '3'
 
 services:
   php:
-    image: webdevops/php-nginx:8.0-alpine
+    image: webdevops/php-nginx-dev:8.0-alpine
     volumes:
       # data containers containing the actual PHP code
       - .:/app:ro
@@ -11,8 +11,17 @@ services:
       - database
     environment:
       WEB_DOCUMENT_ROOT: "/app/src"
+      PHP_DEBUGGER: "xdebug3"
+      XDEBUG_MODE: ${XDEBUG_MODE}
+      XDEBUG_SESSION: ${XDEBUG_SESSION}
+      XDEBUG_START_WITH_REQUEST: ${XDEBUG_START_WITH_REQUEST}
+      XDEBUG_REMOTE_AUTOSTART: 1
+      XDEBUG_CLIENT_PORT: 9003
+      XDEBUG_IDEKEY: ${XDEBUG_IDEKEY}
     ports: 
       - 8888:80
+    expose:
+      - "9003"
   db:
     image: postgres:11
     restart: always
