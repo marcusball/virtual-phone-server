@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  php:
+    image: webdevops/php-nginx:8.0-alpine
+    volumes:
+      # data containers containing the actual PHP code
+      - .:/app:ro
+    networks:
+      - database
+    environment:
+      WEB_DOCUMENT_ROOT: "/app/src"
+    ports: 
+      - 8888:80
+  db:
+    image: postgres:11
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - 5432:5432
+    volumes:
+      - "database:/var/lib/postgresql/data"
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    environment: 
+      ADMINER_DEFAULT_SERVER: db
+    networks:
+      - database
+
+volumes:
+  database:
+
+networks:
+  database:

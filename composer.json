@@ -1,0 +1,11 @@
+{
+    "name": "marcuball/virtual-phone",
+    "type": "project",
+    "require-dev": {
+        "heroku/heroku-buildpack-php": "^192.0"
+    },
+    "require": {
+        "monolog/monolog": "^2.2",
+        "slim/slim": "4.*"
+    }
+}
