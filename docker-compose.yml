@@ -6,6 +6,7 @@ services:
     volumes:
       # data containers containing the actual PHP code
       - .:/app:ro
+      - ./nginx_app.conf:/opt/docker/etc/nginx/vhost.common.conf.d/nginx_app.conf
     networks:
       - database
     environment:
