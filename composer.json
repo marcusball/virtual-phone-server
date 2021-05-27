@@ -6,6 +6,8 @@
     },
     "require": {
         "monolog/monolog": "^2.2",
-        "slim/slim": "4.*"
+        "slim/slim": "4.*",
+        "guzzlehttp/psr7": "^1.8",
+        "http-interop/http-factory-guzzle": "^1.0"
     }
 }
