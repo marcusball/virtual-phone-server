@@ -1,0 +1,5 @@
+RUST_INSTALL_DIESEL=1
+RUST_SKIP_BUILD=1
+DIESEL_FLAGS="--no-default-features --features postgres"
+DIESEL_INSTALL_DIR="bin/"
+TOUCH_CARGO_TOML=1
