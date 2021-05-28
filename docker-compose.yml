@@ -10,7 +10,7 @@ services:
     networks:
       - database
     environment:
-      WEB_DOCUMENT_ROOT: "/app/src"
+      WEB_DOCUMENT_ROOT: "/app/public"
       PHP_DEBUGGER: "xdebug3"
       XDEBUG_MODE: ${XDEBUG_MODE}
       XDEBUG_SESSION: ${XDEBUG_SESSION}
