@@ -18,6 +18,7 @@ services:
       XDEBUG_CLIENT_PORT: 9003
       XDEBUG_IDEKEY: ${XDEBUG_IDEKEY}
       XDEBUG_DISCOVER_CLIENT_HOST: 1
+      DATABASE_URL: ${DOCKER_DATABASE_URL}
     ports: 
       - 8888:80
     expose:
@@ -31,6 +32,8 @@ services:
       - 5432:5432
     volumes:
       - "database:/var/lib/postgresql/data"
+    networks:
+      - database
   adminer:
     image: adminer
     restart: always

@@ -33,6 +33,19 @@ $container->set('logger', function () {
     return $logger;
 });
 
+try {
+	$dbopts = parse_url(getenv('DATABASE_URL'));
+
+	$pdo = new PDO(sprintf('pgsql:host=%s;dbname=%s;options=\'--client_encoding=UTF8\'', $dbopts["host"], ltrim($dbopts["path"],'/')) , $dbopts['user'], $dbopts['pass']);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
+} catch (Exception $e) {
+	$container->get('logger')->emergency('Error connecting to database! ' . $e->getMessage());
+    http_response_code(503);
+    exit;
+}
+
+$container->set('db', $pdo);
 
 /**
  * Add Error Middleware
@@ -64,5 +77,14 @@ $app->get('/info', function (IRequest $request, IResponse $response, $args) {
     return $response;
 });
 
+$app->get('/db', function (IRequest $request, IResponse $response, $args) {
+    $stmt = $this->get('db')->prepare('SELECT \'database says hello\' AS msg');
+    $stmt->execute();
+
+    $stmt->setFetchMode(\PDO::FETCH_COLUMN, 0);
+
+    $response->getBody()->write($stmt->fetch());
+    return $response;
+});
 
 $app->run();
