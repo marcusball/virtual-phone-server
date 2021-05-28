@@ -1,2 +1,2 @@
-release: bash ./heroku_run_migrations.sh
+release: bin/diesel migration run
 web: vendor/bin/heroku-php-nginx -C nginx_app.conf src/

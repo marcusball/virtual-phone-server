@@ -10,9 +10,8 @@
 heroku addons:create heroku-postgresql:hobby-dev
 ```
 
-3. Add Rust Buildpack (for running migrations). Note: See [this issue](https://github.com/emk/heroku-buildpack-rust/issues/40) 
-for why we're not using `emk/rust` buildpack. 
+3. Add Diesel Buildpack (for running migrations).
 
 ```
-heroku buildpacks:add --index 1 https://github.com/emk/heroku-buildpack-rust
+heroku buildpacks:add --index 1 https://github.com/sgrif/heroku-buildpack-diesel.git
 ```
