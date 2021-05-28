@@ -1,5 +1,7 @@
 #!/bin/sh
 
-cargo install diesel_cli --no-default-features --features postgres
+echo $(which cargo)
+echo $(which diesel)
+
 diesel setup
 diesel migration run
