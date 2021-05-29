@@ -3,7 +3,7 @@ namespace VirtualPhone\Domain\PhoneNumber\Repository;
 
 use PDO;
 
-class PhoneNumberRepository {
+class PhoneNumberCommandRepository {
 
     /** @var PDO */
     private $db;

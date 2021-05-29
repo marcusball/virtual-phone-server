@@ -1,14 +1,14 @@
 <?php 
 namespace VirtualPhone\Action;
 
-use VirtualPhone\Domain\PhoneNumber\Service\PhoneNumberService;
+use VirtualPhone\Domain\PhoneNumber\Service\PhoneNumberCommandService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class PhoneNumberAction {
     private $phoneNumberService;
 
-    public function __construct(PhoneNumberService $service) {
+    public function __construct(PhoneNumberCommandService $service) {
         $this->phoneNumberService = $service;
     }
 

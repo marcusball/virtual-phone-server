@@ -1,18 +1,18 @@
 <?php 
 namespace VirtualPhone\Domain\PhoneNumber\Service;
 
-use VirtualPhone\Domain\PhoneNumber\Repository\PhoneNumberRepository;
+use VirtualPhone\Domain\PhoneNumber\Repository\PhoneNumberCommandRepository;
 use VirtualPhone\Exception\ValidationException;
 use Monolog\Logger;
 
-final class PhoneNumberService {
+final class PhoneNumberCommandService {
 
     /** @var PhoneNumberRepository */
     private $repository;
 
     private $logger;
 
-    public function __construct(PhoneNumberRepository $repository, Logger $logger) {
+    public function __construct(PhoneNumberCommandRepository $repository, Logger $logger) {
         $this->repository = $repository;
         $this->logger = $logger;
     }
