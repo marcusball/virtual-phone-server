@@ -10,7 +10,9 @@ services:
     networks:
       - database
     environment:
+      # Web server settings
       WEB_DOCUMENT_ROOT: "/app/public"
+      # Web server XDebug settings
       PHP_DEBUGGER: "xdebug3"
       XDEBUG_MODE: ${XDEBUG_MODE}
       XDEBUG_SESSION: ${XDEBUG_SESSION}
@@ -18,7 +20,9 @@ services:
       XDEBUG_CLIENT_PORT: 9003
       XDEBUG_IDEKEY: ${XDEBUG_IDEKEY}
       XDEBUG_DISCOVER_CLIENT_HOST: 1
+      # App settings: 
       DATABASE_URL: ${DOCKER_DATABASE_URL}
+      APP_IS_PRODUCTION: ${APP_IS_PRODUCTION}
     ports: 
       - 8888:80
     expose:
