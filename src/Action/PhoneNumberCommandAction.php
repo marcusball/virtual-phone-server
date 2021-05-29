@@ -5,7 +5,7 @@ use VirtualPhone\Domain\PhoneNumber\Service\PhoneNumberCommandService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-final class PhoneNumberAction {
+final class PhoneNumberCommandAction {
     private $phoneNumberService;
 
     public function __construct(PhoneNumberCommandService $service) {
