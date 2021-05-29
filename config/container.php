@@ -52,7 +52,7 @@ return [
         return new PDO($dsn, $username, $password, $flags);
     },
 
-    'Logger' => function (ContainerInterface $container) {
+    Monolog\Logger::class => function (ContainerInterface $container) {
         $settings = $container->get('settings')['logger'];
 
         $logger = new Logger($settings['name']);
