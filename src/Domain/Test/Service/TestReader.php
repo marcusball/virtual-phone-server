@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Domain\Test\Service;
+namespace VirtualPhone\Domain\Test\Service;
 
-use App\Domain\Test\Data\TestReaderData;
-use App\Domain\Test\Repository\TestReaderRepository;
-use App\Exception\ValidationException;
+use VirtualPhone\Domain\Test\Data\TestReaderData;
+use VirtualPhone\Domain\Test\Repository\TestReaderRepository;
+use VirtualPhone\Exception\ValidationException;
 
 /**
  * Service.
  */
 final class TestReader {
-    
+
     /**
      * @var TestReaderRepository
      */

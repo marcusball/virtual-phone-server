@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exception;
+namespace VirtualPhone\Exception;
 
 use RuntimeException;
 use Throwable;

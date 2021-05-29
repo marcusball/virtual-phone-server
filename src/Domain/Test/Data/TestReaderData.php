@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Test\Data;
+namespace VirtualPhone\Domain\Test\Data;
 
 final class TestReaderData {
     /** @var string */

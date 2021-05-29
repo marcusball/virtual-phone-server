@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Action;
+namespace VirtualPhone\Action;
 
-use App\Domain\Test\Service\TestReader;
+use VirtualPhone\Domain\Test\Service\TestReader;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * Action
  */
 final class TestReadAction {
-    
+
     /**
      * @var TestReader
      */

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\Test\Repository;
+namespace VirtualPhone\Domain\Test\Repository;
 
-use App\Domain\Test\Data\TestReaderData;
+use VirtualPhone\Domain\Test\Data\TestReaderData;
 use DomainException;
 use PDO;
 
