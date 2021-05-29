@@ -6,3 +6,4 @@ DROP TABLE IF EXISTS phone_number;
 DROP TABLE IF EXISTS person;
 
 DROP TYPE IF EXISTS MESSAGESTATUS;
+DROP FUNCTION IF EXISTS "utcfmt"(timestamp with time zone)

@@ -51,6 +51,10 @@ CREATE TABLE message (
 );  
 COMMENT ON TABLE message IS 'Each message sent or received through this application.';
 
+CREATE OR REPLACE FUNCTION UTCFMT(TIMESTAMPTZ) RETURNS CHAR 
+    AS $$ SELECT TO_CHAR($1 AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') $$
+    LANGUAGE SQL;
+
 SELECT diesel_manage_updated_at('person');
 SELECT diesel_manage_updated_at('phone_number');
 SELECT diesel_manage_updated_at('contact');
