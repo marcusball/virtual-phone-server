@@ -36,4 +36,21 @@ final class MessageCommandService {
 
         return $this->repository->create($data);
     }
+
+    public function updateStatus (int $messageId, string $status) {
+        try {
+            $this->repository->updateStatus($messageId, $status);
+        }
+        catch (\PDOException $e) {
+            // If we receive this error code, it's probably from a status which is not in the expected enum of known status values. 
+            if ($e->getCode() == '22P02') {
+                $this->logger->warning('Received invalid message status "' . $status . '".');
+
+                throw new ValidationException('Invalid message status "' . $status . '"!');
+            }
+
+            // Otherwise, it's some other unhandled PDO exception, just bubble it up. 
+            throw $e;
+        }
+    }
 }

@@ -96,4 +96,22 @@ final class MessageCommandRepository {
             ':sid' => $sid,
         ]);
     }
+
+    public function updateStatus(int $messageId, string $status) {
+        $sql =
+            'UPDATE message
+            SET status = :status
+            WHERE id = :mid
+            -- Only update if the existing status is not a "final state". 
+            -- If it is already in one of these states, then we are just receiving
+            -- an old status; it is not possible to move out of thone of these states. 
+            AND status NOT IN (\'delivered\', \'undelivered\', \'failed\')
+        ';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            ':mid' => $messageId,
+            ':status' => $status,
+        ]);
+    }
 }
