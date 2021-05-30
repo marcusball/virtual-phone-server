@@ -25,17 +25,13 @@ final class ContactCommandAction {
                 'error' => $e->getMessage()
             ]));
 
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(400);
+            return $response->withStatus(400);
         }
 
         $response->getBody()->write(json_encode([
             'contact_id' => $contactId,
         ]));
 
-        return $response
-            ->withHeader('Content-Type', 'application/json')
-            ->withStatus(201);
+        return $response->withStatus(201);
     }
 }

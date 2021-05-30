@@ -48,6 +48,6 @@ final class TestReadAction {
         // Build the HTTP response
         $response->getBody()->write((string)json_encode(['test' => $testData]));
 
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+        return $response->withStatus(200);
     }
 }

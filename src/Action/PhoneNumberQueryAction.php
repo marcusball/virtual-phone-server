@@ -28,8 +28,6 @@ final class PhoneNumberQueryAction {
                 'phone_number' => $phoneData
             ]));
 
-        return $response
-            ->withHeader('Content-Type', 'application/json')
-            ->withStatus(200);
+        return $response->withStatus(200);
     }
 }

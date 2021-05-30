@@ -24,8 +24,6 @@ final class PhoneNumberCommandAction {
 
         $response->getBody()->write(json_encode($result));
 
-        return $response
-            ->withHeader('Content-Type', 'application/json')
-            ->withStatus(201);
+        return $response->withStatus(201);
     }
 }
