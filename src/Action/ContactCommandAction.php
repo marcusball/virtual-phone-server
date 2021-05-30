@@ -4,10 +4,11 @@ namespace VirtualPhone\Action;
 use VirtualPhone\Domain\Contact\Service\ContactCommandService;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use VirtualPhone\Exception\ValidationException;
 
 final class ContactCommandAction {
 
-    private $service; 
+    private $commandService; 
 
     public function __construct(ContactCommandService $service) {
         $this->service = $service;
@@ -16,7 +17,18 @@ final class ContactCommandAction {
     public function create(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
         $contactData = $request->getParsedBody();
 
-        $contactId = $this->service->createContact($contactData);
+        try {
+            $contactId = $this->service->createContact($contactData);
+        }
+        catch (ValidationException $e) {
+            $response->getBody()->write(json_encode([
+                'error' => $e->getMessage()
+            ]));
+
+            return $response
+                ->withHeader('Content-Type', 'application/json')
+                ->withStatus(400);
+        }
 
         $response->getBody()->write(json_encode([
             'contact_id' => $contactId,
