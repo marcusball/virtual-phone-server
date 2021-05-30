@@ -5,6 +5,13 @@ use Slim\App;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+// Load a .env file, if present. 
+$dotenv = Dotenv\Dotenv::createUnsafeImmutable(dirname(__DIR__));
+$dotenv->safeLoad();
+
+$env = $_ENV;
+$svr = $_SERVER;
+
 $containerBuilder = new ContainerBuilder();
 
 // Set up settings

@@ -1,7 +1,7 @@
 <?php
 
 // Check the environment variable to determine whether this is in production or development mode. 
-define('IS_PRODUCTION', getenv('APP_IS_PRODUCTION') == '1');
+define('IS_PRODUCTION', (isset($_SERVER['APP_IS_PRODUCTION']) && $_SERVER['APP_IS_PRODUCTION'] == '1'));
 
 if (!IS_PRODUCTION) {
     // Error reporting for development
@@ -43,7 +43,7 @@ $settings['logger'] = [
     'name' => 'app',
 ];
 
-$dbopts = parse_url(getenv('DATABASE_URL'));
+$dbopts = parse_url($_SERVER['DATABASE_URL']);
 
 // Database settings
 $settings['db'] = [
