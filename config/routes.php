@@ -16,5 +16,5 @@ return function (App $app) {
     $app->post('/contact', [ContactCommandAction::class, 'create']);
     $app->post('/contact/{contactId}/message', MessageCreateAction::class);
 
-    $app->post('/webhook/message/{messageId}/status', MessageStatusUpdateAction::class);
+    $app->post('/webhook/message/{messageId}/status', MessageStatusUpdateAction::class)->setName('message-status-webhook');
 };

@@ -24,6 +24,12 @@ $settings['root'] = dirname(__DIR__);
 $settings['temp'] = $settings['root'] . '/tmp';
 $settings['public'] = $settings['root'] . '/public';
 
+// Leave OVERWRITE_BASE_URL empty to have the app use the request URL when constructing new URLs.
+// Otherwise, set to a full base host URL to use that for constructing new URLs. 
+// For example, if the server is running on 'http://localhost:8888/', but you want to use
+// a proxy for incoming requests, set this value to 'https://your-proxy-domain.com/' to use that domain for constructing URLs. 
+$settings['overwrite_base_url'] = isset($_SERVER['OVERWRITE_BASE_URL']) ? $_SERVER['OVERWRITE_BASE_URL'] : '';
+
 // Error Handling Middleware settings
 $settings['error'] = [
     // Should be set to false in production

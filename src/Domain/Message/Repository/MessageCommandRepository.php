@@ -5,6 +5,7 @@ use Monolog\Logger;
 use VirtualPhone\Domain\Message\Data\CreateOutboundMessageCommandData;
 use Twilio\Rest\Client;
 use PDO;
+use VirtualPhone\API\UrlBuilder;
 
 final class MessageCommandRepository {
 
@@ -14,10 +15,13 @@ final class MessageCommandRepository {
 
     private $logger; 
 
-    public function __construct(PDO $db, Client $twilio, Logger $logger) {
+    private $urlBuilder; 
+
+    public function __construct(PDO $db, Client $twilio, UrlBuilder $builder, Logger $logger) {
         $this->db = $db;
         $this->twilio = $twilio;
         $this->logger = $logger;
+        $this->urlBuilder = $builder;
     }
 
     public function create(CreateOutboundMessageCommandData $data): int {
@@ -30,6 +34,7 @@ final class MessageCommandRepository {
                 $data->to, [
                     'from' => $data->from,
                     'body' => $data->body,
+                    'statusCallback' => $this->urlBuilder->fullUrlFor('message-status-webhook', ['messageId' => $messageId])
                 ]
             );
 

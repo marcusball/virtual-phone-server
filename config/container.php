@@ -7,6 +7,9 @@ use Slim\Factory\AppFactory;
 use Slim\Middleware\ErrorMiddleware;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Slim\Routing\RouteParser;
+use VirtualPhone\API\UrlBuilder;
+use VirtualPhone\Middleware\UrlBuilderMiddleware;
 
 return [
     'settings' => function () {
@@ -30,6 +33,18 @@ return [
             (bool)$settings['log_errors'],
             (bool)$settings['log_error_details']
         );
+    },
+
+    UrlBuilder::class => function(RouteParser $parser, ContainerInterface $container) {
+        return new UrlBuilder($parser, $container);
+    },
+
+    UrlBuilderMiddleware::class => function (UrlBuilder $urlBuilder) {
+        return new UrlBuilderMiddleware($urlBuilder);
+    },
+
+    RouteParser::class => function (App $app) {
+        return $app->getRouteCollector()->getRouteParser();
     },
 
     PDO::class => function (ContainerInterface $container) {
