@@ -1,6 +1,7 @@
 <?php
 
 use Slim\App;
+use VirtualPhone\Action\ContactCommandAction;
 use VirtualPhone\Action\PhoneNumberQueryAction;
 
 return function (App $app) {
@@ -9,4 +10,6 @@ return function (App $app) {
     //$app->post('/users', \App\Action\UserCreateAction::class)->setName('users-post');
     $app->get('/phone/{id}', [PhoneNumberQueryAction::class, 'get']);
     $app->post('/phone', [\VirtualPhone\Action\PhoneNumberCommandAction::class, 'create']);
+
+    $app->post('/contact', [ContactCommandAction::class, 'create']);
 };
