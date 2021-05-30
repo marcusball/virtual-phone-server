@@ -60,5 +60,16 @@ return [
         $logger->pushHandler($streamHandler);
 
         return $logger;
-    }
+    },
+
+    Twilio\Rest\Client::class => function (ContainerInterface $container) {
+        $settings = $container->get('settings')['twilio'];
+
+        $client = new Twilio\Rest\Client(
+            $settings['sid'],
+            $settings['token']
+        );
+
+        return $client;
+    },
 ];

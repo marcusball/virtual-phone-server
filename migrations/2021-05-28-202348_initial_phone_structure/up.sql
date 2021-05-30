@@ -11,7 +11,9 @@ CREATE TABLE phone_number (
     id           SERIAL PRIMARY KEY,
     phone_number VARCHAR(20) NOT NULL,
     created_at   TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at   TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+    updated_at   TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    UNIQUE(phone_number)
 );
 COMMENT ON TABLE phone_number IS 'Every phone number known to this app';
 

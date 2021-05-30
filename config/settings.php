@@ -65,4 +65,9 @@ $settings['db'] = [
     ],
 ];
 
+$settings['twilio'] = [
+    'sid' => $_SERVER['TWILIO_SID'],
+    'token' => $_SERVER['TWILIO_TOKEN'],
+];
+
 return $settings;
