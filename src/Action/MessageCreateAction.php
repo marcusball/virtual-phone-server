@@ -3,6 +3,7 @@ namespace VirtualPhone\Action;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use VirtualPhone\API\APIResponse;
 use VirtualPhone\Domain\Contact\Repository\ContactQueryRepository;
 use VirtualPhone\Domain\Contact\Service\ContactQueryService;
 use VirtualPhone\Domain\Message\Service\MessageCommandService;
@@ -42,21 +43,11 @@ class MessageCreateAction {
         $contact = $this->contactService->getById($contactId, $personId);
 
         if ($contact === null) {
-            $response->getBody()->write(json_encode([
-                'error' => 'Not found',
-            ]));
-
-            return $response->withStatus(404);
+            return APIResponse::error($response, 'Not found', 404)->into();
         }
 
         $messageId = $this->messageService->create($personId, $contact, $body, $from);
 
-        $response->getBody()->write(json_encode([
-            'message' => [
-                'id' => $messageId,
-            ],
-        ]));
-
-        return $response->withStatus(201);
+        return APIResponse::success($response, ['id' => $messageId], 'message', 201)->into();
     }
 }

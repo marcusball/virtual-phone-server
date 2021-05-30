@@ -6,6 +6,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Twilio\Security\RequestValidator;
+use VirtualPhone\API\APIResponse;
 use VirtualPhone\Domain\Message\Service\MessageCommandService;
 use VirtualPhone\Exception\ValidationException;
 
@@ -56,17 +57,11 @@ class MessageStatusUpdateAction {
             $this->service->updateStatus($messageId, $messageStatus);
         }
         catch (ValidationException $e) {
-            $response->getBody()->write(json_encode([
-                'error' => $e->getMessage(),
-            ]));
-            
-            return $response->withStatus(400);
+            return APIResponse::error($response, $e->getMessage(), 400)->into();
         }
 
-        $response->getBody()->write(json_encode([
-            'message' => 'Status updated',
-        ]));
-
-        return $response;
+        return APIResponse::from($response)
+            ->withMessage('Status updated')
+            ->into();
     }
 }

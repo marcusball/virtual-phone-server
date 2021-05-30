@@ -4,6 +4,7 @@ namespace VirtualPhone\Action;
 use VirtualPhone\Domain\PhoneNumber\Service\PhoneNumberCommandService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use VirtualPhone\API\APIResponse;
 
 final class PhoneNumberCommandAction {
     private $phoneNumberService;
@@ -18,12 +19,6 @@ final class PhoneNumberCommandAction {
 
         $phoneId = $this->phoneNumberService->createPhoneNumber($data);
 
-        $result = [
-            'phone_number_id' => $phoneId,
-        ];
-
-        $response->getBody()->write(json_encode($result));
-
-        return $response->withStatus(201);
+        return APIResponse::success($response, ['id' => $phoneId], 'phone_number', 201)->into();
     }
 }
