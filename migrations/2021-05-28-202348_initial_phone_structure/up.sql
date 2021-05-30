@@ -22,7 +22,10 @@ CREATE TABLE contact (
     phone_id    INTEGER NULL REFERENCES phone_number(id) ON DELETE CASCADE ON UPDATE CASCADE,
     description TEXT NULL,
     created_at  TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+    updated_at  TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    -- A single person can't create multiple contacts for the same phone number. 
+    UNIQUE (person_id, phone_id)
 );
 COMMENT ON TABLE contact IS 'The details for each phone number that has interacted with a Person.';
 
