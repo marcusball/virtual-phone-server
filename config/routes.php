@@ -1,6 +1,7 @@
 <?php
 
 use Slim\App;
+use VirtualPhone\Action\Auth\TokenCreateAction;
 use VirtualPhone\Action\ContactCommandAction;
 use VirtualPhone\Action\MessageCreateAction;
 use VirtualPhone\Action\MessageReceiveAction;
@@ -19,4 +20,6 @@ return function (App $app) {
 
     $app->post('/webhook/message', MessageReceiveAction::class)->setName('message-received-webhook');
     $app->post('/webhook/message/{messageId}/status', MessageStatusUpdateAction::class)->setName('message-status-webhook');
+
+    $app->post('/token', TokenCreateAction::class);
 };

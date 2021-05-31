@@ -76,4 +76,18 @@ $settings['twilio'] = [
     'token' => $_SERVER['TWILIO_TOKEN'],
 ];
 
+$settings['jwt'] = [
+    // The issuer name
+    'issuer' => $_SERVER['JWT_ISSUER_NAME'],
+
+    // Max lifetime in seconds
+    'lifetime' => 14400,
+
+    // The private key; generate using `openssl genrsa -out private.pem 2048`
+    'private_key' => $_SERVER['JWT_PRIVATE_KEY'],
+
+    // The public key; generate using `openssl rsa -in private.pem -outform PEM -pubout -out public.pem`
+    'public_key' => $_SERVER['JWT_PUBLIC_KEY'],
+];
+
 return $settings;
