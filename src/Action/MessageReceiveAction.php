@@ -2,9 +2,12 @@
 namespace VirtualPhone\Action;
 
 use Monolog\Logger;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Twilio\Security\RequestValidator;
 use VirtualPhone\API\APIResponse;
+use VirtualPhone\API\UrlBuilder;
 use VirtualPhone\Domain\Contact\Contact;
 use VirtualPhone\Domain\Contact\Repository\ContactQueryRepository;
 use VirtualPhone\Domain\Contact\Service\ContactCommandService;
@@ -17,6 +20,16 @@ use VirtualPhone\Domain\PhoneNumber\Service\PhoneNumberCommandService;
 use VirtualPhone\Domain\PhoneNumber\Service\PhoneNumberQueryService;
 
 class MessageReceiveAction {
+
+    /**
+     * Contains Twilio configuration settings
+     *
+     * @var array {
+     *   @var string $sid
+     *   @var string $token
+     * }
+     */
+    private $settings;
 
     /** @var MessageCommandService */
     private $messageService;
@@ -39,15 +52,20 @@ class MessageReceiveAction {
     /** @var Logger */
     private $logger;
 
+    private $b;
+
     public function __construct(
+        ContainerInterface $container,
         MessageCommandService $messageService, 
         ContactQueryService $contactQueryService,
         ContactCommandService $contactCommandService,
         PhoneNumberQueryService $phoneQueryService,
         PhoneNumberCommandService $phoneCommandService,
         PersonQueryService $personQueryService,
-        Logger $logger
+        Logger $logger,
+        UrlBuilder $b
     ) {
+        $this->settings              = $container->get('settings')['twilio'];
         $this->messageService        = $messageService;
         $this->contactQueryService   = $contactQueryService;
         $this->contactCommandService = $contactCommandService;
@@ -55,6 +73,7 @@ class MessageReceiveAction {
         $this->phoneCommandService   = $phoneCommandService;
         $this->personQueryService    = $personQueryService;
         $this->logger                = $logger; 
+        $this->b = $b;
     }
 
     /**
@@ -66,6 +85,21 @@ class MessageReceiveAction {
      * @return ResponseInterface The response
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+
+        if (IS_PRODUCTION) {
+            $signature = $request->getHeader('X-TWILIO-SIGNATURE')[0];
+            $url       = $request->getUri()->__toString();
+            $validator = new RequestValidator($this->settings['token']);
+
+            if (!$validator->validate($signature, $url, $_POST)) {
+                $this->logger->error('Twilio signature verification failed!');
+                
+                return APIResponse::error($response, 'Signature verification failed', 400)->into();
+            }
+            else {
+                $this->logger->debug('Twilio signature successfully verified. 👍');
+            }
+        }
 
         $data = (array)$request->getParsedBody();
 

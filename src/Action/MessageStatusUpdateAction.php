@@ -36,15 +36,17 @@ class MessageStatusUpdateAction {
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
         if (IS_PRODUCTION) {
-            $signature = $request->getHeader('HTTP-X-TWILIO-SIGNATURE')[0];
+            $signature = $request->getHeader('X-TWILIO-SIGNATURE')[0];
             $url       = $request->getUri()->__toString();
             $validator = new RequestValidator($this->settings['token']);
 
             if (!$validator->validate($signature, $url, $_POST)) {
                 $this->logger->error('Twilio signature verification failed!');
-
-                $response->getBody()->write(json_encode(['error' => 'Signature verification failed']));
-                return $response->withStatus(400);
+                
+                return APIResponse::error($response, 'Signature verification failed', 400)->into();
+            }
+            else {
+                $this->logger->debug('Twilio signature successfully verified. 👍');
             }
         }
 
