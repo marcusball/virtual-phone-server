@@ -119,7 +119,7 @@ class APIResponse implements \JsonSerializable {
             return $this;
         }
 
-        $this->response->withStatus($code, $reasonPhrase);
+        $this->response = $this->response->withStatus($code, $reasonPhrase);
         return $this; 
     }
 
