@@ -38,4 +38,31 @@ class ContactQueryRepository {
 
         return $stmt->fetch();
     }
+
+    public function getByPhoneId(int $phoneId, int $personId): ContactData|bool {
+        $sql = 
+            'SELECT
+                id,
+                person_id AS "personId",
+                name,
+                phone_id  AS "phoneId",
+                description,
+                created_at AS "createdAt",
+                updated_at AS "updatedAt"
+            FROM contact
+            WHERE 
+                phone_id = :id AND
+                person_id = :pid
+        ';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            ':id' => $phoneId,
+            ':pid' => $personId,
+        ]);
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, ContactData::class);
+
+        return $stmt->fetch();
+    }
 }

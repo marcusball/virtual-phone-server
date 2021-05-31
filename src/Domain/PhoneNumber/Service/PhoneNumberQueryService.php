@@ -29,6 +29,37 @@ final class PhoneNumberQueryService {
 
         $data = $this->repository->getById($id);
 
+        // If the phone number was not found. 
+        if (!$data) {
+            return false;
+        }
+
+        return $this->convertToPhoneNumber($data);
+    }
+
+    /**
+     * Get a Phone Number given its full $phoneNumber.
+     *
+     * @param string $phoneNumber
+     * @return PhoneNumber|null The Phone Number data, or null if not found.
+     */
+    public function getByNumber(string $phoneNumber): PhoneNumber|null {
+        $data = $this->repository->getByNumber($phoneNumber);
+
+        if (!$data) {
+            return null;
+        }
+
+        return $this->convertToPhoneNumber($data);
+    }
+
+    /**
+     * Convert PhoneNumberData into a PhoneNumber.
+     *
+     * @param PhoneNumberData $data
+     * @return PhoneNumber
+     */
+    private function convertToPhoneNumber(PhoneNumberData $data): PhoneNumber {
         $phoneNumber = new PhoneNumber;
         $phoneNumber->id          = $data->id;
         $phoneNumber->phoneNumber = $data->phoneNumber;

@@ -17,12 +17,12 @@ final class PhoneNumberCommandService {
         $this->logger = $logger;
     }
 
-    public function createPhoneNumber(array $data): int {
+    public function createPhoneNumber(string $phoneNumber): int {
         // @TODO validate 
 
-        $phoneId = $this->repository->insertPhoneNumber($data);
+        $phoneId = $this->repository->insertPhoneNumber($phoneNumber);
 
-        $this->logger->info('Created new phone number record ' . $data['phone_number'] . ' ID: ' . $phoneId);
+        $this->logger->info('Created new phone number record ' . $phoneNumber . ' ID: ' . $phoneId);
 
         return $phoneId;
     }

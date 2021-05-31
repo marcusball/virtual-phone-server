@@ -6,6 +6,8 @@ use VirtualPhone\Domain\Message\Data\CreateOutboundMessageCommandData;
 use Twilio\Rest\Client;
 use PDO;
 use VirtualPhone\API\UrlBuilder;
+use VirtualPhone\Domain\Message\Data\CreateInboundMessageCommandData;
+use VirtualPhone\Domain\Message\Data\CreateMessageCommandData;
 
 final class MessageCommandRepository {
 
@@ -25,8 +27,14 @@ final class MessageCommandRepository {
     }
 
     public function create(CreateOutboundMessageCommandData $data): int {
+        $recordData = new CreateMessageCommandData;
+        $recordData->sid       = null;
+        $recordData->contactId = $data->contactId;
+        $recordData->personId  = $data->personId;
+        $recordData->body      = $data->body;
+
         // Create a record of this message in the database. 
-        $messageId = $this->createMessageRecord($data);
+        $messageId = $this->createMessageRecord($recordData);
 
         $message = $this->twilio
             ->messages
@@ -54,26 +62,38 @@ final class MessageCommandRepository {
         return $messageId;
     }
 
+    public function receive(CreateInboundMessageCommandData $data): int {
+        $recordData = new CreateMessageCommandData;
+        $recordData->sid       = $data->sid;
+        $recordData->contactId = $data->contactId;
+        $recordData->personId  = $data->personId;
+        $recordData->body      = $data->body;
+        $recordData->status    = $data->status;
+
+        return $this->createMessageRecord($recordData);
+    }
+
     /**
      * Create a database record for this message. 
      * Should be used before a message is sent.
      *
-     * @param CreateOutboundMessageCommandData $data
+     * @param CreateMessageCommandData $data
      * @return integer
      */
-    private function createMessageRecord(CreateOutboundMessageCommandData $data): int {
+    private function createMessageRecord(CreateMessageCommandData $data): int {
         $sql = 
-            'INSERT INTO message (person_id, contact_id, body, status)
-            VALUES (:pid, :cid, :body, :st)
+            'INSERT INTO message (sid, person_id, contact_id, body, status)
+            VALUES (:sid, :pid, :cid, :body, :st)
             RETURNING id
         ';
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
+            ':sid'  => $data->sid,
             ':pid'  => $data->personId,
             ':cid'  => $data->contactId,
             ':body' => $data->body,
-            ':st'   => 'unknown',
+            ':st'   => $data->status ?? 'unknown',
         ]);
         $stmt->setFetchMode(PDO::FETCH_COLUMN, 0);
         $messageId = $stmt->fetch();

@@ -17,7 +17,7 @@ class PhoneNumberCommandRepository {
         $this->db = $db;
     }
 
-    public function insertPhoneNumber(array $number): int {
+    public function insertPhoneNumber(string $phoneNumber): int {
         $sql = 
             'INSERT INTO phone_number (phone_number)
             VALUES (:num)
@@ -26,7 +26,7 @@ class PhoneNumberCommandRepository {
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
-            ':num' => $number['phone_number']
+            ':num' => $phoneNumber,
         ]);
         $stmt->setFetchMode(PDO::FETCH_COLUMN, 0);
         $id = $stmt->fetch();
