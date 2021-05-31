@@ -22,7 +22,7 @@ return [
         return AppFactory::create();
     },
 
-    ErrorMiddleware::class => function (ContainerInterface $container) {
+    ErrorMiddleware::class => function (ContainerInterface $container, Logger $logger) {
         $app = $container->get(App::class);
         $settings = $container->get('settings')['error'];
 
@@ -31,7 +31,8 @@ return [
             $app->getResponseFactory(),
             (bool)$settings['display_error_details'],
             (bool)$settings['log_errors'],
-            (bool)$settings['log_error_details']
+            (bool)$settings['log_error_details'],
+            $logger
         );
     },
 
