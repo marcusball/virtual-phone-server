@@ -3,6 +3,7 @@
 use Slim\App;
 use Slim\Middleware\ErrorMiddleware;
 use VirtualPhone\Middleware\ContentTypeJson;
+use VirtualPhone\Middleware\JwtClaimMiddleware;
 use VirtualPhone\Middleware\UrlBuilderMiddleware;
 
 return function (App $app) {
@@ -12,12 +13,15 @@ return function (App $app) {
     // Add the Slim built-in routing middleware
     $app->addRoutingMiddleware();
 
-    // Catch exceptions and errors
-    $app->add(ErrorMiddleware::class);
+    // Add middleware to help access RequestInterface within classes requiring DI. 
+    $app->add(UrlBuilderMiddleware::class);
+
+    // Parse present JWTs and add their values to the $request attribues. 
+    $app->add(JwtClaimMiddleware::class);
 
     // Always return Content-Type as JSON
     $app->add(ContentTypeJson::class);
 
-    // Add middleware to help access RequestInterface within classes requiring DI. 
-    $app->add(UrlBuilderMiddleware::class);
+    // Catch exceptions and errors
+    $app->add(ErrorMiddleware::class);
 };
