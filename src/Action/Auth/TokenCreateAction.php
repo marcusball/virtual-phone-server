@@ -39,6 +39,7 @@ final class TokenCreateAction {
 
         $username = (string)($data['username'] ?? '');
         $password = (string)($data['password'] ?? '');
+        $person_id = (int)$data['person_id'];
 
         // Validate login (pseudo code)
         // Warning: This should be done in an application service and not here!
@@ -53,6 +54,7 @@ final class TokenCreateAction {
         // Create a fresh token
         $token = $this->jwtAuth->createJwt([
             'uid' => $username,
+            'personId' => $person_id,
         ]);
 
         // Transform the result into a OAuh 2.0 Access Token Response

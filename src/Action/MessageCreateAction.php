@@ -36,7 +36,7 @@ class MessageCreateAction {
 
         $data = (object)$request->getParsedBody();
 
-        $personId = $data->personId;
+        $personId = $request->getAttribute('personId');
         $body     = $data->body;
         $from     = $data->from;
 

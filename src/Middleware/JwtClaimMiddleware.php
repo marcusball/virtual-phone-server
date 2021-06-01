@@ -57,6 +57,7 @@ final class JwtClaimMiddleware implements MiddlewareInterface {
             $request = $request->withAttribute('token', $token);
             // Append the user id as request attribute
             $request = $request->withAttribute('uid', $token->claims()->get('uid'));
+            $request = $request->withAttribute('personId', $token->claims()->get('personId'));
         }
 
         return $handler->handle($request);
