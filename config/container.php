@@ -14,6 +14,7 @@ use Slim\Routing\RouteParser;
 use VirtualPhone\API\UrlBuilder;
 use VirtualPhone\Middleware\UrlBuilderMiddleware;
 use VirtualPhone\API\JwtAuth;
+use Psr\Http\Message\ResponseFactoryInterface;
 
 return [
     'settings' => function () {
