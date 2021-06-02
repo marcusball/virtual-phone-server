@@ -5,18 +5,45 @@ use VirtualPhone\Domain\Contact\Service\ContactCommandService;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use VirtualPhone\API\APIResponse;
+use VirtualPhone\Domain\Contact\Data\CreateContactCommandData;
+use VirtualPhone\Domain\PhoneNumber\Service\PhoneNumberQueryService;
 use VirtualPhone\Exception\ValidationException;
 
 final class ContactCommandAction {
 
-    private $commandService; 
+    /** @var ContactCommandService */
+    private $service; 
 
-    public function __construct(ContactCommandService $service) {
+    /** @var PhoneNumberQueryService */
+    private $phoneService;
+
+    public function __construct(
+        ContactCommandService $service,
+        PhoneNumberQueryService $phoneService
+    ) {
         $this->service = $service;
+        $this->phoneService = $phoneService;
     }
 
     public function create(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
-        $contactData = $request->getParsedBody();
+        $body = $request->getParsedBody();
+
+        $personId    = $request->getAttribute('personId');
+        $phoneId     = $body['phoneId'];
+        $name        = $body['name'];
+        $description = $body['description'];
+
+        $phone = $this->phoneService->getById($phoneId);
+
+        if (!$phone) {
+            return APIResponse::error($response, 'Phone number not found', 404)->into();
+        }
+
+        $contactData = new CreateContactCommandData;
+        $contactData->personId    = $personId;
+        $contactData->name        = $name;
+        $contactData->phoneId     = $phone->id;
+        $contactData->description = $description;
 
         try {
             $contactId = $this->service->createContact($contactData);

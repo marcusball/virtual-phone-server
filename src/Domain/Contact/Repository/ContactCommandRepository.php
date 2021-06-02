@@ -2,6 +2,7 @@
 namespace VirtualPhone\Domain\Contact\Repository;
 
 use PDO;
+use VirtualPhone\Domain\Contact\Data\CreateContactCommandData;
 
 class ContactCommandRepository {
 
@@ -12,7 +13,7 @@ class ContactCommandRepository {
         $this->db = $db;
     }
 
-    public function createContact(array $data): int {
+    public function createContact(CreateContactCommandData $data): int {
         $sql = 
             'INSERT INTO contact (
                 person_id, name, phone_id, description
@@ -23,10 +24,10 @@ class ContactCommandRepository {
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
-            ':pid'  => $data['person_id'],
-            ':name' => $data['name'],
-            ':nid'  => $data['phone_id'],
-            ':desc' => $data['description'],
+            ':pid'  => $data->personId,
+            ':name' => $data->name,
+            ':nid'  => $data->phoneId,
+            ':desc' => $data->description,
         ]);
 
         $stmt->setFetchMode(PDO::FETCH_COLUMN, 0);

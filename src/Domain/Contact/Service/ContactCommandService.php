@@ -1,6 +1,7 @@
 <?php
 namespace VirtualPhone\Domain\Contact\Service;
 
+use VirtualPhone\Domain\Contact\Data\CreateContactCommandData;
 use VirtualPhone\Domain\Contact\Repository\ContactCommandRepository;
 use VirtualPhone\Exception\ValidationException;
 
@@ -20,7 +21,7 @@ final class ContactCommandService {
      * @throws ValidationException
      * @throws \PDOException
      */
-    public function createContact(array $data): int {
+    public function createContact(CreateContactCommandData $data): int {
         try {
             return $this->repository->createContact($data);
         }
