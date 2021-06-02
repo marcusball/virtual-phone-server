@@ -9,6 +9,7 @@ use VirtualPhone\Action\MessageCreateAction;
 use VirtualPhone\Action\MessageReceiveAction;
 use VirtualPhone\Action\MessageStatusUpdateAction;
 use VirtualPhone\Action\PhoneNumberQueryAction;
+use VirtualPhone\Action\ThreadsListAction;
 use VirtualPhone\Middleware\JwtAuthMiddleware;
 
 return function (App $app) {
@@ -23,6 +24,8 @@ return function (App $app) {
         $group->get('/contact', [ContactQueryAction::class, 'getAll']);
         $group->post('/contact', [ContactCommandAction::class, 'create']);
         $group->post('/contact/{contactId}/message', MessageCreateAction::class);
+
+        $group->get('/thread', ThreadsListAction::class);
     })->add(JwtAuthMiddleware::class);
 
     $app->post('/webhook/message', MessageReceiveAction::class)->setName('message-received-webhook');
