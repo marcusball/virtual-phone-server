@@ -81,7 +81,7 @@ $settings['jwt'] = [
     'issuer' => $_SERVER['JWT_ISSUER_NAME'],
 
     // Max lifetime in seconds
-    'lifetime' => 14400,
+    'lifetime' => (60 * 60 * 24 * 30), // 30 days
 
     // The private key; generate using `openssl genrsa -out private.pem 2048`
     'private_key' => $_SERVER['JWT_PRIVATE_KEY'],
