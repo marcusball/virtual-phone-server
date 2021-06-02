@@ -9,6 +9,7 @@ use Twilio\Security\RequestValidator;
 use VirtualPhone\API\APIResponse;
 use VirtualPhone\API\UrlBuilder;
 use VirtualPhone\Domain\Contact\Contact;
+use VirtualPhone\Domain\Contact\Data\CreateContactCommandData;
 use VirtualPhone\Domain\Contact\Repository\ContactQueryRepository;
 use VirtualPhone\Domain\Contact\Service\ContactCommandService;
 use VirtualPhone\Domain\Contact\Service\ContactQueryService;
@@ -191,12 +192,13 @@ class MessageReceiveAction {
 
         $this->logger->info('Person ' . $person->id . ' has no contact for Phone Number (' . $phone->id . '); creating one...');
 
-        $contactId = $this->contactCommandService->createContact([
-            'person_id'   => $person->id,
-            'phone_id'    => $phone->id,
-            'name'        => null,
-            'description' => null,
-        ]);
+        $contactData = new CreateContactCommandData;
+        $contactData->personId    = $person->id;
+        $contactData->phoneId     = $phone->id;
+        $contactData->name        = null;
+        $contactData->description = null;
+
+        $contactId = $this->contactCommandService->createContact($contactData);
 
         $this->logger->info(sprintf('Contact %s created for Person %s', $contactId, $person->id));
 
