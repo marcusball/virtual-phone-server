@@ -18,13 +18,13 @@ return function (App $app) {
     //$app->post('/users', \App\Action\UserCreateAction::class)->setName('users-post');
 
     $app->group('', function (RouteCollectorProxy $group) {
-        $group->get('/phone/{id}', [PhoneNumberQueryAction::class, 'get']);
+        $group->get( '/phone/{id}', [PhoneNumberQueryAction::class, 'get']);
         $group->post('/phone', [\VirtualPhone\Action\PhoneNumberCommandAction::class, 'create']);
 
-        $group->get('/contact', [ContactQueryAction::class, 'getAll']);
+        $group->get( '/contact', [ContactQueryAction::class, 'getAll']);
         $group->post('/contact', [ContactCommandAction::class, 'create']);
 
-        $group->get('/thread', ThreadsListAction::class);
+        $group->get(' /thread', ThreadsListAction::class);
         $group->post('/thread/{contactId}', MessageCreateAction::class);
     })->add(JwtAuthMiddleware::class);
 
