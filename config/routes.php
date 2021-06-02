@@ -23,9 +23,9 @@ return function (App $app) {
 
         $group->get('/contact', [ContactQueryAction::class, 'getAll']);
         $group->post('/contact', [ContactCommandAction::class, 'create']);
-        $group->post('/contact/{contactId}/message', MessageCreateAction::class);
 
         $group->get('/thread', ThreadsListAction::class);
+        $group->post('/thread/{contactId}', MessageCreateAction::class);
     })->add(JwtAuthMiddleware::class);
 
     $app->post('/webhook/message', MessageReceiveAction::class)->setName('message-received-webhook');
