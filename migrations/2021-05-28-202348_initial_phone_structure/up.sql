@@ -35,7 +35,7 @@ COMMENT ON COLUMN contact.phone_id IS 'The ID of the phone_number associated wit
 COMMENT ON COLUMN contact.name IS 'The name for this contact, defined by the Person to whom this contact belongs.';
 COMMENT ON COLUMN contact.description IS 'A description or notes about this Contact.';
 
-CREATE TYPE MESSAGESTATUS AS ENUM (
+CREATE TYPE MESSAGE_STATUS AS ENUM (
     'unknown',
     'accepted',
     'queued',
@@ -47,7 +47,7 @@ CREATE TYPE MESSAGESTATUS AS ENUM (
     'undelivered',
     'failed'
 );
-COMMENT ON TYPE MESSAGESTATUS IS 'The delivery status of a text message from Twilio';
+COMMENT ON TYPE MESSAGE_STATUS IS 'The delivery status of a text message from Twilio';
 
 CREATE TABLE message (
     id         SERIAL PRIMARY KEY,
@@ -55,7 +55,7 @@ CREATE TABLE message (
     person_id  INTEGER NOT NULL REFERENCES person(id) ON DELETE CASCADE ON UPDATE CASCADE,
     contact_id INTEGER NOT NULL REFERENCES contact(id) ON DELETE CASCADE ON UPDATE CASCADE,
     body       TEXT NULL,
-    status     MESSAGESTATUS NOT NULL,
+    status     MESSAGE_STATUS NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
