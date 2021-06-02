@@ -7,6 +7,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+/**
+ * @see https://discourse.slimframework.com/t/how-access-request-object-on-di-container/4049
+ */
 final class UrlBuilderMiddleware implements MiddlewareInterface
 {
     /**
