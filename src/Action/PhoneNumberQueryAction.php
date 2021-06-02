@@ -22,6 +22,6 @@ final class PhoneNumberQueryAction {
             return APIResponse::error($response, 'Not found', 404)->into();
         }
 
-        return APIResponse::success($response, $phoneData, 'phone_number');
+        return APIResponse::success($response, $phoneData, 'phoneNumber')->into();
     }
 }
