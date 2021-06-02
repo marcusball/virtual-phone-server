@@ -14,6 +14,9 @@ class CreateMessageCommandData {
     /** @var string The message body. */
     public $body; 
 
+    /** @var string "inbound" or "outbound" */
+    public $direction;
+
     /** @var string|null The current delivery status of this message. */
     public $status;
 }

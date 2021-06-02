@@ -32,6 +32,7 @@ final class MessageCommandRepository {
         $recordData->contactId = $data->contactId;
         $recordData->personId  = $data->personId;
         $recordData->body      = $data->body;
+        $recordData->direction = 'outbound';
 
         // Create a record of this message in the database. 
         $messageId = $this->createMessageRecord($recordData);
@@ -69,6 +70,7 @@ final class MessageCommandRepository {
         $recordData->personId  = $data->personId;
         $recordData->body      = $data->body;
         $recordData->status    = $data->status;
+        $recordData->direction = 'inbound';
 
         return $this->createMessageRecord($recordData);
     }
@@ -82,8 +84,8 @@ final class MessageCommandRepository {
      */
     private function createMessageRecord(CreateMessageCommandData $data): int {
         $sql = 
-            'INSERT INTO message (sid, person_id, contact_id, body, status)
-            VALUES (:sid, :pid, :cid, :body, :st)
+            'INSERT INTO message (sid, person_id, contact_id, body, direction, status)
+            VALUES (:sid, :pid, :cid, :body, :dir, :st)
             RETURNING id
         ';
 
@@ -93,6 +95,7 @@ final class MessageCommandRepository {
             ':pid'  => $data->personId,
             ':cid'  => $data->contactId,
             ':body' => $data->body,
+            ':dir'  => $data->direction,
             ':st'   => $data->status ?? 'unknown',
         ]);
         $stmt->setFetchMode(PDO::FETCH_COLUMN, 0);
