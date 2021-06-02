@@ -4,6 +4,7 @@ use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 use VirtualPhone\Action\Auth\TokenCreateAction;
 use VirtualPhone\Action\ContactCommandAction;
+use VirtualPhone\Action\ContactQueryAction;
 use VirtualPhone\Action\MessageCreateAction;
 use VirtualPhone\Action\MessageReceiveAction;
 use VirtualPhone\Action\MessageStatusUpdateAction;
@@ -18,7 +19,8 @@ return function (App $app) {
     $app->group('', function (RouteCollectorProxy $group) {
         $group->get('/phone/{id}', [PhoneNumberQueryAction::class, 'get']);
         $group->post('/phone', [\VirtualPhone\Action\PhoneNumberCommandAction::class, 'create']);
-        
+
+        $group->get('/contact', [ContactQueryAction::class, 'getAll']);
         $group->post('/contact', [ContactCommandAction::class, 'create']);
         $group->post('/contact/{contactId}/message', MessageCreateAction::class);
     })->add(JwtAuthMiddleware::class);

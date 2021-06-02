@@ -39,6 +39,22 @@ final class ContactQueryService {
         return $this->convertToContact($contactData);
     }
 
+    /**
+     * Get all contacts for a specific person.
+     *
+     * @param integer $personId
+     * @return Contact[]|null
+     */
+    public function getAllForPerson(int $personId): array|null {
+        $contactsData = $this->repository->getAllForPerson($personId);
+
+        if ($contactsData === false){ 
+            return null;
+        }
+
+        return array_map([$this, 'convertToContact'], $contactsData);
+    }
+
     private function convertToContact(ContactData $data): Contact {
         $contact = new Contact;
         $contact->setPersonId(  $data->personId);
