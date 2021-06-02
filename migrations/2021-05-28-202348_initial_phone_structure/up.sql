@@ -49,12 +49,18 @@ CREATE TYPE MESSAGE_STATUS AS ENUM (
 );
 COMMENT ON TYPE MESSAGE_STATUS IS 'The delivery status of a text message from Twilio';
 
+CREATE TYPE MESSAGE_DIRECTION AS ENUM (
+    'inbound', 'outbound'
+);
+COMMENT ON TYPE MESSAGE_DIRECTION IS 'If a message was inbound to, or outbound from, this app.';
+
 CREATE TABLE message (
     id         SERIAL PRIMARY KEY,
     sid        VARCHAR(128) NULL,
     person_id  INTEGER NOT NULL REFERENCES person(id) ON DELETE CASCADE ON UPDATE CASCADE,
     contact_id INTEGER NOT NULL REFERENCES contact(id) ON DELETE CASCADE ON UPDATE CASCADE,
     body       TEXT NULL,
+    direction  MESSAGE_DIRECTION NOT NULL,
     status     MESSAGE_STATUS NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -66,6 +72,7 @@ COMMENT ON COLUMN message.sid IS 'The Twilio SID which uniquely identifies each 
 COMMENT ON COLUMN message.person_id IS 'The Person using this app who sent or received this message.';
 COMMENT ON COLUMN message.contact_id IS 'The Contact to whom the message was sent, or from whom the message was received.';
 COMMENT ON COLUMN message.status IS 'The status of the message received from Twilio.';
+COMMENT ON COLUMN message.direction IS 'Whether the message was sent outbound from this app, or received inbound to it.';
 
 CREATE OR REPLACE FUNCTION UTCFMT(TIMESTAMPTZ) RETURNS CHAR 
     AS $$ SELECT TO_CHAR($1 AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"') $$
