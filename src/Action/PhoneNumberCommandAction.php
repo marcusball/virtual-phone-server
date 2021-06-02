@@ -17,8 +17,8 @@ final class PhoneNumberCommandAction {
         // Collect input from the HTTP request
         $data = (array)$request->getParsedBody();
 
-        $phoneId = $this->phoneNumberService->createPhoneNumber($data['phone_number']);
+        $phoneId = $this->phoneNumberService->createPhoneNumber($data['phoneNumber']);
 
-        return APIResponse::success($response, ['id' => $phoneId], 'phone_number', 201)->into();
+        return APIResponse::success($response, ['id' => $phoneId], 'phoneNumber', 201)->into();
     }
 }
