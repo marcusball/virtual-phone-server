@@ -80,8 +80,8 @@ class ContactQueryRepository {
                 name,
                 phone_id  AS "phoneId",
                 description,
-                created_at AS "createdAt",
-                updated_at AS "updatedAt"
+                UTCFMT(created_at) AS "createdAt",
+                UTCFMT(updated_at) AS "updatedAt"
             FROM contact
             WHERE person_id = :pid
         ';
