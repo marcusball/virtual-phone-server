@@ -9,6 +9,7 @@ use VirtualPhone\Action\MessageCreateAction;
 use VirtualPhone\Action\MessageReceiveAction;
 use VirtualPhone\Action\MessageStatusUpdateAction;
 use VirtualPhone\Action\PhoneNumberQueryAction;
+use VirtualPhone\Action\ThreadQueryAction;
 use VirtualPhone\Action\ThreadsListAction;
 use VirtualPhone\Middleware\JwtAuthMiddleware;
 
@@ -25,6 +26,7 @@ return function (App $app) {
         $group->post('/contact', [ContactCommandAction::class, 'create']);
 
         $group->get( '/thread', ThreadsListAction::class);
+        $group->get( '/thread/{contactId}', ThreadQueryAction::class);
         $group->post('/thread/{contactId}', MessageCreateAction::class);
     })->add(JwtAuthMiddleware::class);
 

@@ -1,13 +1,11 @@
 <?php 
 namespace VirtualPhone\Domain\Thread\Data;
 
+use VirtualPhone\Domain\Message\Message;
 final class ThreadQueryData {
 
     /** @var int */
     public $id;
-    
-    /** @var string */
-    public $sid;
 
     /** @var int */
     public $personId;
@@ -15,18 +13,6 @@ final class ThreadQueryData {
     /** @var int */
     public $contactId;
 
-    /** @var string */
-    public $body;
-
-    /** @var string 'inbound' or 'outbound' */
-    public $direction;
-
-    /** @var string  */
-    public $status;
-
-    /** @var string */
-    public $createdAt;
-
-    /** @var string */
-    public $updatedAt;
+    /** @var Message[] */
+    public $messages;
 }

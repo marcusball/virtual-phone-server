@@ -2,22 +2,28 @@
 namespace VirtualPhone\Domain\Thread\Repository;
 
 use PDO;
+use VirtualPhone\Domain\Message\Service\MessageQueryService;
 use VirtualPhone\Domain\Thread\Data\ThreadQueryData;
+use VirtualPhone\Domain\Thread\Data\ThreadsQueryData;
 
 final class ThreadQueryRepository {
 
     /** @var PDO */
     private $db;
 
-    public function __construct(PDO $db) {
+    /** @var MessageQueryService */
+    private $messageService;
+
+    public function __construct(PDO $db, MessageQueryService $messageService) {
         $this->db = $db;
+        $this->messageService = $messageService;
     }
 
     /**
      * Get all message threads for a specific Person.
      *
      * @param integer $personId
-     * @return ThreadQueryData[]|false
+     * @return ThreadsQueryData[]|false
      */
     public function getThreadsForPerson(int $personId): array|bool {
         $sql = 
@@ -51,8 +57,31 @@ final class ThreadQueryRepository {
             ':pid' => $personId,
         ]);
 
-        $stmt->setFetchMode(PDO::FETCH_CLASS, ThreadQueryData::class);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, ThreadsQueryData::class);
 
         return $stmt->fetchAll();
+    }
+
+    /**
+     * Get a thread, and all associated messages
+     *
+     * @param integer $threadId The ID of the Thread (currently the Contact ID).
+     * @param integer $personId
+     * @return ThreadQueryData|false
+     */
+    public function getThread(int $threadId, int $personId): ThreadQueryData|bool {
+        $messages = $this->messageService->getAllByContact($threadId, $personId);
+
+        if (!$messages) {
+            return false;
+        }
+
+        $thread = new ThreadQueryData;
+        $thread->id = $threadId;
+        $thread->contactId = $threadId;
+        $thread->personId = $personId;
+        $thread->messages = $messages;
+
+        return $thread;
     }
 }

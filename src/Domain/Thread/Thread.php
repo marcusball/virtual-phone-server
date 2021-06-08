@@ -2,6 +2,7 @@
 namespace VirtualPhone\Domain\Thread;
 
 use VirtualPhone\Domain\Contact\Contact;
+use VirtualPhone\Domain\Message\Message;
 use LastMessage;
 
 class Thread {
@@ -10,6 +11,9 @@ class Thread {
 
     /** @var Contact */
     public $contact;
+
+    /** @var Message[]|null */
+    public $messages = null;
 
     /** @var LastMessage */
     public $lastMessage;
