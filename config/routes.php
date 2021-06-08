@@ -24,7 +24,7 @@ return function (App $app) {
         $group->get( '/contact', [ContactQueryAction::class, 'getAll']);
         $group->post('/contact', [ContactCommandAction::class, 'create']);
 
-        $group->get(' /thread', ThreadsListAction::class);
+        $group->get( '/thread', ThreadsListAction::class);
         $group->post('/thread/{contactId}', MessageCreateAction::class);
     })->add(JwtAuthMiddleware::class);
 

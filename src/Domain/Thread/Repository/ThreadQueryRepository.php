@@ -39,8 +39,8 @@ final class ThreadQueryRepository {
                 body,
                 direction,
                 status,
-                created_at AS "createdAt",
-                updated_at AS "updatedAt"
+                UTCFMT(created_at) AS "createdAt",
+                UTCFMT(updated_at) AS "updatedAt"
             FROM thread
             WHERE rank = 1
             ORDER BY created_at DESC

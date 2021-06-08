@@ -5,6 +5,7 @@ use VirtualPhone\Domain\Contact\Service\RepeatContactQueryService;
 use VirtualPhone\Domain\Thread\Data\ThreadQueryData;
 use VirtualPhone\Domain\Thread\Repository\ThreadQueryRepository;
 use VirtualPhone\Domain\Thread\Thread;
+use VirtualPhone\Domain\Thread\LastMessage;
 
 class ThreadQueryService {
 
@@ -33,11 +34,16 @@ class ThreadQueryService {
     }
 
     private function convertToThread(ThreadQueryData $data): Thread {
+        $contact = $this->contactQueryService->getById($data->contactId, $data->personId);
+
         $thread = new Thread;
-        $thread->contact = $this->contactQueryService->getById($data->contactId, $data->personId);
-        $thread->body = $data->body;
-        $thread->direction = $data->direction;
-        $thread->lastMessageAt = $data->createdAt;
+        $thread->id = $contact->id ?? null;
+        $thread->contact = $contact;
+        $thread->lastMessage = new LastMessage;
+        $thread->lastMessage->id        = $data->id;
+        $thread->lastMessage->body      = $data->body;
+        $thread->lastMessage->direction = $data->direction;
+        $thread->lastMessage->createdAt = $data->createdAt;
 
         return $thread;
     }
