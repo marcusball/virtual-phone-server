@@ -37,14 +37,13 @@ final class TokenCreateAction {
     ): ResponseInterface {
         $data = (array)$request->getParsedBody();
 
-        $username = (string)($data['username'] ?? '');
         $password = (string)($data['password'] ?? '');
         $person_id = (int)$data['person_id'];
 
         // Validate login (pseudo code)
         // Warning: This should be done in an application service and not here!
         // $userAuthData = $this->userAuth->authenticate($username, $password);
-        $isValidLogin = ($username === 'user' && $password === 'secret');
+        $isValidLogin = ($password === $_SERVER['TOKEN_PASSWORD']);
 
         if (!$isValidLogin) {
             // Invalid authentication credentials
@@ -53,7 +52,6 @@ final class TokenCreateAction {
 
         // Create a fresh token
         $token = $this->jwtAuth->createJwt([
-            'uid' => $username,
             'personId' => $person_id,
         ]);
 
