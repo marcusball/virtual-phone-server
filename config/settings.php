@@ -51,9 +51,23 @@ $settings['logger'] = [
 
 $dbopts = parse_url($_SERVER['DATABASE_URL']);
 
+// Get the driver from the URL scheme
+$dbDriver = (function ($scheme) {
+    switch ($scheme) {
+        case 'postgresql': 
+        case 'postgres':
+            return 'pgsql';
+        case 'mysql':
+            return 'mysql';
+        default:
+            // ¯\_(ツ)_/¯
+            return $scheme;
+    }
+}) ($dbopts['scheme']);
+
 // Database settings
 $settings['db'] = [
-    'driver'   => 'pgsql',
+    'driver'   => $dbDriver,
     'host'     => $dbopts['host'],
     'username' => $dbopts['user'],
     'database' => ltrim($dbopts["path"],'/'),
