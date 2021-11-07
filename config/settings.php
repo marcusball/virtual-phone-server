@@ -69,9 +69,11 @@ $dbDriver = (function ($scheme) {
 $settings['db'] = [
     'driver'   => $dbDriver,
     'host'     => $dbopts['host'],
+    'port'     => isset($dbopts['port']) ? $dbopts['port'] : null,
     'username' => $dbopts['user'],
     'database' => ltrim($dbopts["path"],'/'),
     'password' => $dbopts['pass'],
+    'query'    => isset($dbopts['query']) ? $dbopts['query'] : null,
     'charset'  => 'UTF8',
     'flags'    => [
         // Turn off persistent connections

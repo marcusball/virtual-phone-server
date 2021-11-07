@@ -58,9 +58,11 @@ return [
 
         $driver = $settings['driver'];
         $host = $settings['host'];
+        $port = $settings['port'];
         $dbname = $settings['database'];
         $username = $settings['username'];
         $password = $settings['password'];
+        $query = $settings['query'];
         $charset = $settings['charset'];
         $flags = $settings['flags'];
 
@@ -68,8 +70,27 @@ return [
         if ($driver === 'pgsql') { $charsetStr = "options='--client_encoding=$charset'"; }
         else if ($driver === 'mysql') { $charsetStr = "charset=$charset"; }
 
-        $dsn = "$driver:host=$host;dbname=$dbname;$charsetStr";
+        // Create an array of all of the parts that will be included in the final DSN string. 
+        $dsnParts = [
+            "$driver:host=$host",
+            "dbname=$dbname",
+        ];
 
+        // Add DB port if it was specified
+        if (!is_null($port)) {
+            $dsnParts[] = "port=$port";
+        }
+
+        // If query parameters are set, such as "host/db?sslmode=require", then add them to the DSN set. 
+        if (!is_null($query)) {
+            $queryArgs = explode('&', $query);
+            array_merge($dsnParts, $queryArgs);
+        }
+
+        $dsnParts[] = $charsetStr;
+
+        // Construct final DSN string and create connection
+        $dsn = implode(';', $dsnParts);
         return new PDO($dsn, $username, $password, $flags);
     },
 
